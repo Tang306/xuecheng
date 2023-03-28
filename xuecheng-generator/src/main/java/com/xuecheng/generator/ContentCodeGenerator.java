@@ -65,7 +65,7 @@ public class ContentCodeGenerator {
 		// 数据库配置
 		DataSourceConfig dsc = new DataSourceConfig();
 		dsc.setDbType(DbType.MYSQL);
-		dsc.setUrl("jdbc:mysql://192.168.123.86:3306/xc166_" + SERVICE_NAME
+		dsc.setUrl("jdbc:mysql://192.168.123.86:3306/xc_" + SERVICE_NAME
 				+ "?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
 //		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
