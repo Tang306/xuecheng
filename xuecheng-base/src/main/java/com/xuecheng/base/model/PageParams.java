@@ -15,11 +15,11 @@ public class PageParams {
 
     //当前页码
     @ApiModelProperty("当前页码")
-    private Long pageNo = 1L;
+    private Long pageNo;
 
     //每页记录数默认值
     @ApiModelProperty("每页记录数默认值")
-    private Long pageSize =10L;
+    private Long pageSize;
 
     public PageParams(){
 
