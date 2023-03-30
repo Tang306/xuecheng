@@ -31,7 +31,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
         <!-- 通用组件 -->
