@@ -1,4 +1,4 @@
-package com.xuecheng.system.config;
+package com.xuecheng.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
