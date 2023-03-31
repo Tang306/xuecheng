@@ -2,6 +2,8 @@ package com.xuecheng.content;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.content.model.dto.AddCourseDto;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
@@ -23,6 +25,9 @@ public class CourseBaseInfoServiceTests {
     @Test
     public void testCourseBaseInfoService() {
 
+        /**
+         * 查询基本信息
+         */
         //查询条件
         QueryCourseParamsDto courseParamsDto = new QueryCourseParamsDto();
         courseParamsDto.setCourseName("java");//课程名称查询条件
@@ -35,5 +40,31 @@ public class CourseBaseInfoServiceTests {
         PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(pageParams, courseParamsDto);
         System.out.println(courseBasePageResult);
 
+        /**
+         * 新增基本信息
+         */
+        //新增信息
+        Long companyId = 1232141425L;
+
+        AddCourseDto addCourseDto = new AddCourseDto();
+        addCourseDto.setCharge("201001");
+        addCourseDto.setPrice(101F);
+        addCourseDto.setOriginalPrice(100F);
+        addCourseDto.setQq("22333");
+        addCourseDto.setWechat("223344");
+        addCourseDto.setPhone("13333333");
+        addCourseDto.setValidDays(365);
+        addCourseDto.setMt("1-1");
+        addCourseDto.setSt("1-1-1");
+        addCourseDto.setName("测试课程103");
+        addCourseDto.setPic("fdsf");
+        addCourseDto.setTeachmode("200002");
+        addCourseDto.setUsers("初级人员");
+        addCourseDto.setTags("tagstags");
+        addCourseDto.setGrade("204001");
+        addCourseDto.setDescription("描述描述");
+
+        CourseBaseInfoDto courseBase = courseBaseInfoService.createCourseBase(companyId, addCourseDto);
+        System.out.println(courseBase);
     }
 }
