@@ -1,6 +1,7 @@
 package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xuecheng.base.execption.XueChengException;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
@@ -52,6 +53,26 @@ public class TeachplanServiceImpl implements TeachplanService {
             //将参数复制到teachplan
             BeanUtils.copyProperties(saveTeachplanDto, teachplan);
             teachplanMapper.updateById(teachplan);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteTeachplan(long courseId) {
+        /**
+         * 大章节下有小章节时不允许删除大章节
+         */
+        Teachplan teachplan = teachplanMapper.selectById(courseId);
+        if (teachplan.getParentid() == 0) {
+            //删除大章节
+            if (teachplan.getCourseId() == null) {
+                teachplanMapper.deleteById(courseId);
+            } else {
+                XueChengException.cast("课程计划信息还有子级信息，无法操作");
+            }
+        } else {
+            //删除小章节
+            teachplanMapper.deleteById(courseId);
         }
     }
 

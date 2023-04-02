@@ -36,4 +36,10 @@ public class TeachplanController {
         teachplanService.saveTeachplan(teachplan);
     }
 
+    @ApiOperation("删除课程计划树形结构")
+    @ApiImplicitParam(value = "courseId",name = "课程Id",required = true,dataType = "Long",paramType = "path")
+    @DeleteMapping("/teachplan/{courseId}")
+    public void deleteTeachplan(@PathVariable Long courseId){
+        teachplanService.deleteTeachplan(courseId);
+    }
 }
