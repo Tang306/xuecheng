@@ -57,18 +57,21 @@ Content-Type: application/json
   "price": 0.01
 }
 
+### 删除课程
+DELETE {{content_host}}/content/course/87
+
 ### 查询某个课程的课程计划
-GET {{content_host}}/content/teachplan/74/tree-nodes
+GET {{content_host}}/content/teachplan/117/tree-nodes
 
 ### 新增课程计划--章
 POST {{content_host}}/content/teachplan
 Content-Type: application/json
 
 {
-  "courseId" : 74,
+  "courseId" : 117,
   "parentid": 0,
   "grade" : 1,
-  "pname" : "新章名称 [点击修改]"
+  "pname" : "章节名称 [点击修改]"
 
 }
 
@@ -77,8 +80,8 @@ POST {{content_host}}/content/teachplan
 Content-Type: application/json
 
 {
-  "courseId" : 74,
-  "parentid": 247,
+  "courseId" : 177,
+  "parentid": 268,
   "grade" : 2,
   "pname" : "小节名称 [点击修改]"
 }
@@ -107,4 +110,41 @@ Content-Type: application/json
 }
 
 ### 删除课程计划
-DELETE {{content_host}}/content/teachplan/43
+DELETE {{content_host}}/content/teachplan/335
+
+### 向下移动课程计划
+GET {{content_host}}/content/teachplan/movedown/344
+
+### 向上移动课程计划
+GET {{content_host}}/content/teachplan/moveup/344
+
+### 查询课程教师信息
+GET {{content_host}}/content/courseTeacher/list/117
+
+### 新增课程教师
+POST {{content_host}}/content/courseTeacher
+Content-Type: application/json
+
+{
+  "courseId": 117,
+  "teacherName": "钟老师",
+  "position": "教师职位",
+  "introduction": "教师简介"
+}
+
+### 修改课程教师
+PUT {{content_host}}/content/courseTeacher
+Content-Type: application/json
+
+{
+  "id": 62,
+  "courseId": 117,
+  "teacherName": "徐老师",
+  "position": "教师职位",
+  "introduction": "教师简介",
+  "photograph": null,
+  "createDate": null
+}
+
+### 删除课程教师
+DELETE {{content_host}}/content/courseTeacher/course/117/64

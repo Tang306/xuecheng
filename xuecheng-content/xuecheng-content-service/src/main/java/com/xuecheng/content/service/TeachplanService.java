@@ -27,7 +27,19 @@ public interface TeachplanService {
 
     /**
      * 删除课程计划
-     * @param courseId 课程信息
+     * @param id 课程信息
      */
-    void deleteTeachplan(long courseId);
+    void deleteTeachplan(long id);
+
+    /**
+     * 向下移动课程信息
+     * @param id 课程计划id
+     */
+    void moveDownTeachplan(long id);
+
+    /**
+     * 向上移动课程信息
+     * @param id 课程计划id
+     */
+    void moveUpTeachplan(long id);
 }

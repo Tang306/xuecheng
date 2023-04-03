@@ -32,14 +32,26 @@ public class TeachplanController {
 
     @ApiOperation("课程计划创建或修改")
     @PostMapping("/teachplan")
-    public void saveTeachplan( @RequestBody SaveTeachplanDto teachplan){
+    public void saveTeachplan(@RequestBody SaveTeachplanDto teachplan){
         teachplanService.saveTeachplan(teachplan);
     }
 
     @ApiOperation("删除课程计划树形结构")
-    @ApiImplicitParam(value = "courseId",name = "课程Id",required = true,dataType = "Long",paramType = "path")
-    @DeleteMapping("/teachplan/{courseId}")
-    public void deleteTeachplan(@PathVariable Long courseId){
-        teachplanService.deleteTeachplan(courseId);
+    @ApiImplicitParam(value = "id",name = "id",required = true,dataType = "Long",paramType = "path")
+    @DeleteMapping("/teachplan/{id}")
+    public void deleteTeachplan(@PathVariable Long id){
+        teachplanService.deleteTeachplan(id);
+    }
+
+    @ApiOperation("向下移动课程计划树形结构")
+    @GetMapping("/teachplan/movedown/{id}")
+    public void moveDownTeachplan(@PathVariable Long id) {
+        teachplanService.moveDownTeachplan(id);
+    }
+
+    @ApiOperation("向上移动课程计划树形结构")
+    @GetMapping("/teachplan/moveup/{id}")
+    public void moveUpTeachplan(@PathVariable Long id) {
+        teachplanService.moveUpTeachplan(id);
     }
 }

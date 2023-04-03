@@ -217,4 +217,11 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseBaseInfoDto courseBaseInfoDto = this.getCourseBaseInfo(courseId);
         return courseBaseInfoDto;
     }
+
+    @Transactional
+    @Override
+    public void deleteCourseBase(long companyId, long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        courseBaseMapper.deleteById(courseBase.getId());
+    }
 }
