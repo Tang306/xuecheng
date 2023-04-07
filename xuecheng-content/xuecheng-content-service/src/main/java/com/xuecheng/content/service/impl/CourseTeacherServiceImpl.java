@@ -1,6 +1,6 @@
 package com.xuecheng.content.service.impl;
 
-import com.xuecheng.base.execption.XueChengException;
+import com.xuecheng.base.exception.XueChengException;
 import com.xuecheng.content.mapper.CourseTeacherMapper;
 import com.xuecheng.content.model.po.CourseTeacher;
 import com.xuecheng.content.service.CourseTeacherService;
