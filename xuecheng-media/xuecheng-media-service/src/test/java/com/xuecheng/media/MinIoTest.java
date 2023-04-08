@@ -1,14 +1,18 @@
 package com.xuecheng.media;
 
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.RemoveObjectArgs;
-import io.minio.UploadObjectArgs;
+import io.minio.*;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilterInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author tangcw
@@ -82,14 +86,87 @@ public class MinIoTest {
         //指定输出流
         FileOutputStream outputStream = new FileOutputStream("D:\\Java\\project\\xuechengzaixian\\files\\1a.jpg");
         IOUtils.copy(inputStream, outputStream);
+    }
 
-        //校验文件的完整性对文件的内容进行md5
-//        String source_md5 = DigestUtils.md5Hex(inputStream);//minio中文件的md5
-//        FileInputStream fileInputStream = new FileInputStream(new File("D:\\Java\\project\\xuechengzaixian\\files\\1a.jpg"));
-//        String local_md5 = DigestUtils.md5Hex(fileInputStream);//下载文件的md5
-//        if (source_md5.equals(local_md5)){
-//            System.out.println("下载成功");
-//        }
+    /**
+     * 上传分块文件
+     * @throws Exception
+     */
+    @Test
+    public void test_uploadChunk() throws Exception{
+        String chunkFolderPath = "D:\\Java\\project\\xuechengzaixian\\bigfiles\\chunk\\";
+        File chunkFolder = new File(chunkFolderPath);
+        //分块文件
+        File[] files = chunkFolder.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            //上传文件的参数信息
+            UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
+                    .bucket("testbucket")//桶
+                    .filename(chunkFolderPath + i)//指定本地文件路径
+                    .object("chunk/" + i)//对象名
+                    .build();
+
+            //上传文件
+            minioClient.uploadObject(uploadObjectArgs);
+            System.out.println("上传分块" + i + "成功");
+        }
+    }
+
+    /**
+     * 合并文件，要求分块文件最小5M
+     * @throws Exception
+     */
+    @Test
+    public void test_merge() throws Exception {
+        List<ComposeSource> sources = new ArrayList<>();
+        String chunkFolderPath = "D:\\Java\\project\\xuechengzaixian\\bigfiles\\chunk\\";
+        File chunkFolder = new File(chunkFolderPath);
+        //分块文件
+        File[] files = chunkFolder.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            //指定分块文件的信息
+            ComposeSource composeSource = ComposeSource.builder()
+                    .bucket("testbucket")
+                    .object("chunk/".concat(Integer.toString(i)))
+                    .build();
+            sources.add(composeSource);
+        }
+
+        //指定合并后的objectName信息
+        ComposeObjectArgs composeObjectArgs = ComposeObjectArgs.builder()
+                .bucket("testbucket")
+                .object("merge01.mp4")
+                .sources(sources)
+                .build();
+        minioClient.composeObject(composeObjectArgs);
+
+    }
+
+    /**
+     * 清除分块文件
+     */
+    @Test
+    public void test_removeObjects(){
+        String chunkFolderPath = "D:\\Java\\project\\xuechengzaixian\\bigfiles\\chunk\\";
+        File chunkFolder = new File(chunkFolderPath);
+        //分块文件
+        File[] files = chunkFolder.listFiles();
+        //合并分块完成将分块文件清除
+        List<DeleteObject> deleteObjects = Stream.iterate(0, i -> ++i)
+                .limit(files.length)
+                .map(i -> new DeleteObject("chunk/".concat(Integer.toString(i))))
+                .collect(Collectors.toList());
+
+        RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder().bucket("testbucket").objects(deleteObjects).build();
+        Iterable<Result<DeleteError>> results = minioClient.removeObjects(removeObjectsArgs);
+        results.forEach(r->{
+            DeleteError deleteError = null;
+            try {
+                deleteError = r.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }
