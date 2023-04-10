@@ -26,4 +26,14 @@ public interface MediaFileProcessService {
      * @return 开启成功返回true，开始失败返回false
      */
     public boolean startTask(long id);
+
+    /**
+     * 保存任务结果
+     * @param taskId 任务id
+     * @param status 任务状态
+     * @param fileId 文件id
+     * @param url url
+     * @param errorMsg 错误信息
+     */
+    void saveProcessFinishStatus(Long taskId,String status,String fileId,String url,String errorMsg);
 }
